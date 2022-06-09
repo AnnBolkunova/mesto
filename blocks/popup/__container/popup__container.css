@@ -1,0 +1,15 @@
+.popup__container {
+    width: 100%;
+    height: 100%;
+    padding-top: 195px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media screen and (max-width: 459px) {
+    .popup__container {
+        padding-top: 123px;
+    }
+
+}
