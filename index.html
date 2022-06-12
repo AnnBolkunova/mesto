@@ -12,15 +12,17 @@
     <header class="header">
         <img class="header__logo" src="./images/header-logo.svg" alt="лого Место">
     </header>
-    <main>
+    <main class="content">
         <section class="profile">
             <img class="profile__avatar" src="./images/avatar.jpg" alt="аватар">
             <div class="profile__info">
-                <h1 class="profile__title">Жак-Ив Кусто</h1>
+                <div class="profile__name">
+                    <h1 class="profile__title">Жак-Ив Кусто</h1>
+                    <p class="profile__subtitle">Исследователь океана</p>
+                </div>
                 <button type="button" class="profile__edit-button">
                     <img class="profile__edit-icon" src="./images/edit-button.svg" alt="иконка редактирования">
                 </button>
-                <p class="profile__subtitle">Исследователь океана</p>
             </div>
             <button type="button" class="profile__add-button">
                 <img class="profile__add-icon" src="./images/add-button.svg" alt="иконка добавления">
@@ -33,27 +35,21 @@
                         alt="фото Карачаевск">
                     <div class="elements__group">
                         <h2 class="elements__group-text">Карачаевск</h2>
-                        <button type="button" class="elements__like-button">
-                            <img src="./images/like-button.svg" alt="иконка лайка">
-                        </button>
+                        <button type="button" class="elements__like-button"></button>
                     </div>
                 </li>
                 <li class="elements__item">
                     <img class="elements__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="фото Эльбрус">
                     <div class="elements__group">
                         <h2 class="elements__group-text">Гора Эльбрус</h2>
-                        <button type="button" class="elements__like-button">
-                            <img src="./images/like-button.svg" alt="иконка лайка">
-                        </button>
+                        <button type="button" class="elements__like-button"></button>
                     </div>
                 </li>
                 <li class="elements__item">
                     <img class="elements__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="фото Домбай">
                     <div class="elements__group">
                         <h2 class="elements__group-text">Домбай</h2>
-                        <button type="button" class="elements__like-button">
-                            <img src="./images/like-button.svg" alt="иконка лайка">
-                        </button>
+                        <button type="button" class="elements__like-button"></button>
                     </div>
                 </li>
                 <li class="elements__item">
@@ -61,27 +57,21 @@
                         alt="фото Алтай">
                     <div class="elements__group">
                         <h2 class="elements__group-text">Алтай</h2>
-                        <button type="button" class="elements__like-button">
-                            <img src="./images/like-button.svg" alt="иконка лайка">
-                        </button>
+                        <button type="button" class="elements__like-button"></button>
                     </div>
                 </li>
                 <li class="elements__item">
                     <img class="elements__image" src="./images/olga-miller-WzknpQsmEJ4-unsplash.jpg" alt="фото Байкал">
                     <div class="elements__group">
                         <h2 class="elements__group-text">Озеро Байкал</h2>
-                        <button type="button" class="elements__like-button">
-                            <img src="./images/like-button.svg" alt="иконка лайка">
-                        </button>
+                        <button type="button" class="elements__like-button"></button>
                     </div>
                 </li>
                 <li class="elements__item">
                     <img class="elements__image" src="./images/ivan-alZtq9SiRqI-unsplash.jpg" alt="фото Камчатка">
                     <div class="elements__group">
                         <h2 class="elements__group-text">Камчатка</h2>
-                        <button type="button" class="elements__like-button">
-                            <img src="./images/like-button.svg" alt="иконка лайка">
-                        </button>
+                        <button type="button" class="elements__like-button"></button>
                     </div>
                 </li>
             </ul>
@@ -95,14 +85,14 @@
             <form class="popup__form" id="popup__edit" name="form__edit">
                 <button type="button" class="popup__close-button"></button>
                 <h3 class="popup__title">Редактировать профиль</h3>
-                <input type="text" class="popup__input" id="edit_name" placeholder="Жак-Ив Кусто">
-                <input type="text" class="popup__input" id="edit_profession"
+                <input name="name" type="text" class="popup__input" id="edit_name" placeholder="Жак-Ив Кусто">
+                <input name="profession" type="text" class="popup__input" id="edit_profession"
                     placeholder="Исследователь океана">
                 <button type="submit" class="popup__submit-button">Сохранить</button>
             </form>
         </div>
     </div>
-    <script src="./pages/index.js"></script>
+    <script src="./scripts/index.js"></script>
 </body>
 
 </html>
