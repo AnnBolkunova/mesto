@@ -5,8 +5,8 @@
     background: url(../../../images/close-icon.svg) transparent;
     justify-self: flex-end;
     position: absolute;
-    top: 155px;
-    left: 863px;
+    top: -40px;
+    right: -40px;
     border: none;
     cursor: pointer;
     transition: 0.5s ease-out 0.3s;
@@ -20,8 +20,8 @@
     .popup__close-button {
         width: 20px;
         height: 20px;
-        top: 87px;
-        left: 281px;
+        top: -36px;
+        right: 0;
         background-size: contain;
     }
 
