@@ -29,58 +29,13 @@
             </button>
         </section>
         <section class="elements">
-            <ul class="elements__list">
-                <li class="elements__item">
-                    <img class="elements__image" src="./images/kirill-pershin-1088404-unsplash.jpg"
-                        alt="фото Карачаевск">
-                    <div class="elements__group">
-                        <h2 class="elements__group-text">Карачаевск</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
-                <li class="elements__item">
-                    <img class="elements__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="фото Эльбрус">
-                    <div class="elements__group">
-                        <h2 class="elements__group-text">Гора Эльбрус</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
-                <li class="elements__item">
-                    <img class="elements__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="фото Домбай">
-                    <div class="elements__group">
-                        <h2 class="elements__group-text">Домбай</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
-                <li class="elements__item">
-                    <img class="elements__image" src="./images/shtabnykh_photo-5r1uySt7l6U-unsplash.jpg"
-                        alt="фото Алтай">
-                    <div class="elements__group">
-                        <h2 class="elements__group-text">Алтай</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
-                <li class="elements__item">
-                    <img class="elements__image" src="./images/olga-miller-WzknpQsmEJ4-unsplash.jpg" alt="фото Байкал">
-                    <div class="elements__group">
-                        <h2 class="elements__group-text">Озеро Байкал</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
-                <li class="elements__item">
-                    <img class="elements__image" src="./images/ivan-alZtq9SiRqI-unsplash.jpg" alt="фото Камчатка">
-                    <div class="elements__group">
-                        <h2 class="elements__group-text">Камчатка</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
-            </ul>
+            <ul class="elements__list"></ul>
         </section>
     </main>
     <footer class="footer">
         <p lang="en" class="footer__copyright">© 2020 Mesto Russia</p>
     </footer>
-    <div class="popup">
+    <div class="popup popup_type_edit-profile">
         <div class="popup__container">
             <form class="popup__form" id="popup__edit" name="form__edit">
                 <button type="button" class="popup__close-button"></button>
@@ -92,6 +47,35 @@
             </form>
         </div>
     </div>
+    <div class="popup popup_type_add-card">
+        <div class="popup__container">
+            <form class="popup__form" id="popup__new-place" name="form__place">
+                <button type="button" class="popup__close-button"></button>
+                <h3 class="popup__title">Новое место</h3>
+                <input name="card-name" type="text" class="popup__input" id="place_name" placeholder="Название">
+                <input name="card-url" type="text" class="popup__input" id="place_url" placeholder="Ссылка на картинку">
+                <button type="submit" class="popup__submit-button">Создать</button>
+            </form>
+        </div>
+    </div>
+    <div class="popup popup_type_photo">
+        <figure class="popup__photo-image">
+            <button type="button" class="popup__close-button"></button>
+            <img class="popup__image">
+            <figcaption class="popup__caption"></figcaption>
+        </figure>
+    </div>
+
+    <template id="card-template">
+        <li class="elements__item">
+            <button type="button" class="elements__delete-button"></button>
+            <img class="elements__image" src="#" alt="#">
+            <div class="elements__group">
+                <h2 class="elements__group-text"></h2>
+                <button type="button" class="elements__like-button"></button>
+            </div>
+        </li>
+    </template>
     <script src="./scripts/index.js"></script>
 </body>
 
