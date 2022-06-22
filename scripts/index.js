@@ -9,9 +9,15 @@ const profileAuthor = profile.querySelector('.profile__title');
 const profileComment = profile.querySelector('.profile__subtitle');
 const editButton = profile.querySelector('.profile__edit-button');
 
-// Слушатель события с функцией открытия попапа редактирования профиля
-editButton.addEventListener('click', openPopup => {
+// Функция открытия попапа и слушатель для события
+function openPopup(popupProfile) {
     popupProfile.classList.add('popup_opened');
+    nameInput.value = profileAuthor.textContent;
+    jobInput.value = profileComment.textContent;
+} 
+
+editButton.addEventListener('click', () => {
+    openPopup(popupProfile);
 });
 
 // Функция присвоения значений полям ввода в форме
@@ -19,15 +25,19 @@ function formSubmitHandlerProfile(evt) {
     evt.preventDefault();
     profileAuthor.textContent = nameInput.value;
     profileComment.textContent = jobInput.value;
-    popupProfile.classList.remove('popup_opened');
+    closePopup(popupProfile);
 };
 
 // Обработчик кнопки Сохранить
 formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
 
-// Слушатель события с функцией закрытия попапа
-closeButtonProfile.addEventListener('click', closePopup => {
+// Функция закрытия попапа и слушатель для события
+function closePopup(popupProfile) {
     popupProfile.classList.remove('popup_opened');
+} 
+
+closeButtonProfile.addEventListener('click', () => {
+    closePopup(popupProfile);
 });
 
 
@@ -42,14 +52,14 @@ const cardUrlInput = formElementCard.querySelector('#place_url');
 const addButton = profile.querySelector('.profile__add-button');
 const saveButtonCard = formElementCard.querySelector('.popup__submit-button');
 
-// Слушатель события с функцией открытия попапа формы добавления карточки
-addButton.addEventListener('click', openPopup => {
-    popupElementCard.classList.add('popup_opened');
+// Слушатель для кнопки открытия формы добавления карточки
+addButton.addEventListener('click', () => {
+    openPopup(popupElementCard);
 });
 
-// Слушатель события с функцией закрытия попапа
-closeButtonCard.addEventListener('click', closePopup => {
-    popupElementCard.classList.remove('popup_opened');
+// Слушатель для кнопки закрытия попапа с формой
+closeButtonCard.addEventListener('click', () => {
+    closePopup(popupElementCard);
 });
 
 
@@ -67,7 +77,7 @@ function formSubmitHandlerCard(evt) {
     cardNameInput.value = '';
     cardUrlInput.value = '';
 
-    popupElementCard.classList.remove('popup_opened');
+    closePopup(popupElementCard);
 };
 
 
@@ -87,8 +97,8 @@ const imageCaption = figureElement.querySelector('.popup__caption');
 
 
 // Слушатель для кнопки закрытия модального окна с изображением и функции закрытия
-closeButtonImage.addEventListener('click', closePupup => {
-    popupElementImage.classList.remove('popup_opened');
+closeButtonImage.addEventListener('click', () => {
+    closePopup(popupElementImage);
 });
 
 
@@ -126,7 +136,7 @@ function createCard(element) {
 
 
     cardImage.addEventListener('click', (evt) => {
-        popupElementImage.classList.add('popup_opened');
+        openPopup(popupElementImage);
         imagePhoto.src = element.link;
         imagePhoto.alt = element.name;
         imageCaption.textContent = element.name;
