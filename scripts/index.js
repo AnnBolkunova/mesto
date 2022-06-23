@@ -9,14 +9,20 @@ const profileAuthor = profile.querySelector('.profile__title');
 const profileComment = profile.querySelector('.profile__subtitle');
 const editButton = profile.querySelector('.profile__edit-button');
 
-// Функция открытия попапа и слушатель для события
-function openPopup(popupProfile) {
-    popupProfile.classList.add('popup_opened');
-    nameInput.value = profileAuthor.textContent;
-    jobInput.value = profileComment.textContent;
+// Функция открытия попапа
+function openPopup(popup) {
+    popup.classList.add('popup_opened');
 } 
 
+// Функция закрытия попапа
+function closePopup(popup) {
+    popup.classList.remove('popup_opened');
+} 
+
+
 editButton.addEventListener('click', () => {
+    nameInput.value = profileAuthor.textContent;
+    jobInput.value = profileComment.textContent;
     openPopup(popupProfile);
 });
 
@@ -31,11 +37,7 @@ function formSubmitHandlerProfile(evt) {
 // Обработчик кнопки Сохранить
 formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
 
-// Функция закрытия попапа и слушатель для события
-function closePopup(popupProfile) {
-    popupProfile.classList.remove('popup_opened');
-} 
-
+// Слушатель для кнопки закрытия попапа профиля
 closeButtonProfile.addEventListener('click', () => {
     closePopup(popupProfile);
 });
@@ -96,7 +98,7 @@ const imagePhoto = figureElement.querySelector('.popup__image');
 const imageCaption = figureElement.querySelector('.popup__caption');
 
 
-// Слушатель для кнопки закрытия модального окна с изображением и функции закрытия
+// Слушатель для кнопки закрытия модального окна с изображением
 closeButtonImage.addEventListener('click', () => {
     closePopup(popupElementImage);
 });
