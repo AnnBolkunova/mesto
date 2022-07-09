@@ -37,24 +37,31 @@
     </footer>
     <div class="popup popup_type_edit-profile">
         <div class="popup__container">
-            <form class="popup__form" id="popup__edit" name="form__edit">
+            <form class="popup__form" id="popup__edit" name="form__edit" novalidate>
                 <button type="button" class="popup__close-button"></button>
                 <h3 class="popup__title">Редактировать профиль</h3>
-                <input name="name" type="text" class="popup__input" id="edit_name" placeholder="Имя">
-                <input name="profession" type="text" class="popup__input" id="edit_profession"
-                    placeholder="О себе">
-                <button type="submit" class="popup__submit-button">Сохранить</button>
+                <input name="name" type="text" class="popup__input popup__input_type_name" id="edit_name"
+                    placeholder="Имя" minlength="2" maxlength="40" required>
+                <span class="popup__error popup__name-error"></span>
+                <input name="profession" type="text" class="popup__input popuo__input_type_profession"
+                    id="edit_profession" placeholder="О себе" minlength="2" maxlength="200" required>
+                <span class="popup__error popup__profession-error"></span>
+                <button type="submit" class="popup__submit-button popup__submit-button_inactive">Сохранить</button>
             </form>
         </div>
     </div>
     <div class="popup popup_type_add-card">
         <div class="popup__container">
-            <form class="popup__form" id="popup__new-place" name="form__place">
+            <form class="popup__form" id="popup__new-place" name="form__place" novalidate>
                 <button type="button" class="popup__close-button"></button>
                 <h3 class="popup__title">Новое место</h3>
-                <input name="card-name" type="text" class="popup__input" id="place_name" placeholder="Название">
-                <input name="card-url" type="text" class="popup__input" id="place_url" placeholder="Ссылка на картинку">
-                <button type="submit" class="popup__submit-button">Создать</button>
+                <input name="card-name" type="text" class="popup__input popup__input_type_placename" id="place_name"
+                    placeholder="Название" minlength="2" maxlength="30" required>
+                <span class="popup__error popup__placename-error"></span>
+                <input name="card-url" type="url" class="popup__input popup__input_type_placeurl" id="place_url"
+                    placeholder="Ссылка на картинку" required>
+                <span class="popup__error popup__placeurl-error"></span>
+                <button type="submit" class="popup__submit-button popup__submit-button_inactive">Создать</button>
             </form>
         </div>
     </div>
@@ -77,6 +84,7 @@
         </li>
     </template>
     <script src="./scripts/initial-cards.js"></script>
+    <script src="./scripts/validate.js"></script>
     <script src="./scripts/index.js"></script>
 </body>
 
