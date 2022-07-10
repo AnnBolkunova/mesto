@@ -1,4 +1,4 @@
-// Фуекция отображения элемента с ошибкой
+// Функция отображения элемента с ошибкой
 function showInputError(formElement, inputElement, errorMessage, classes) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(classes.inputErrorClass);

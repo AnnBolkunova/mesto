@@ -1,6 +1,5 @@
 // Определение элементов попапа редактирования профиля в структуре DOM
 const popupProfile = document.querySelector('.popup_type_edit-profile');
-const closeButtonProfile = popupProfile.querySelector('.popup__close-button');
 const formElementProfile = popupProfile.querySelector('#popup__edit');
 const nameInput = popupProfile.querySelector('#edit-name');
 const jobInput = popupProfile.querySelector('#edit-profession');
@@ -8,12 +7,15 @@ const profile = document.querySelector('.profile');
 const profileAuthor = profile.querySelector('.profile__title');
 const profileComment = profile.querySelector('.profile__subtitle');
 const editButton = profile.querySelector('.profile__edit-button');
+// Находим все крестики проекта по универсальному селектору
+const closeButtons = document.querySelectorAll('.popup__close-button');
 
 
 // Функция закрытия попапа
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', closeByEsc);
+    popup.removeEventListener('click', closeByClick);
 }
 
 // Функция закрытия попапа клавишей esc
@@ -46,7 +48,7 @@ editButton.addEventListener('click', () => {
 });
 
 // Функция присвоения значений полям ввода в форме
-function formSubmitHandlerProfile(evt) {
+function handleProfileFormSubmit(evt) {
     evt.preventDefault();
     profileAuthor.textContent = nameInput.value;
     profileComment.textContent = jobInput.value;
@@ -54,19 +56,20 @@ function formSubmitHandlerProfile(evt) {
 };
 
 // Обработчик кнопки Сохранить
-formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
+formElementProfile.addEventListener('submit', handleProfileFormSubmit);
 
-// Слушатель для кнопки закрытия попапа профиля
-closeButtonProfile.addEventListener('click', () => {
-    closePopup(popupProfile);
-});
 
+// Поиск ближайшего к крестику попапа и установка обработчика закрытия по клику на крестик
+closeButtons.forEach((button) => {
+    const popup = button.closest('.popup');
+  
+    button.addEventListener('click', () => closePopup(popup));
+  });
 
 
 
 // Определение элементов попапа добавления карточки в структуре DOM
 const popupElementCard = document.querySelector('.popup_type_add-card');
-const closeButtonCard = popupElementCard.querySelector('.popup__close-button');
 const formElementCard = popupElementCard.querySelector('#popup__new-place');
 const cardNameInput = formElementCard.querySelector('#place-name');
 const cardUrlInput = formElementCard.querySelector('#place-url');
@@ -78,32 +81,30 @@ addButton.addEventListener('click', () => {
     openPopup(popupElementCard);
 });
 
-// Слушатель для кнопки закрытия попапа с формой
-closeButtonCard.addEventListener('click', () => {
-    closePopup(popupElementCard);
-});
-
 
 // Функция создания новой карточки
-function formSubmitHandlerCard(evt) {
+function handleCardFormSubmit(evt) {
     evt.preventDefault();
 
-    const newCard = [];
+    const newCard = {};
     newCard.name = cardNameInput.value;
     newCard.link = cardUrlInput.value;
 
     const newCardElement = createCard(newCard);
     addCard(newCardElement);
 
-    cardNameInput.value = '';
-    cardUrlInput.value = '';
+    evt.target.reset();
+
+    const submitButton = formElementCard.querySelector('.popup__submit-button');
+    submitButton.classList.add('popup__submit-button_inactive');
+    submitButton.setAttribute('disabled', true);
 
     closePopup(popupElementCard);
 };
 
 
 // Слушатель для кнопки submit
-popupElementCard.addEventListener('submit', formSubmitHandlerCard);
+popupElementCard.addEventListener('submit', handleCardFormSubmit);
 
 
 
@@ -111,16 +112,11 @@ popupElementCard.addEventListener('submit', formSubmitHandlerCard);
 
 // Определение элементов модального окна с изображением из карточки в структуре DOM
 const popupElementImage = document.querySelector('.popup_type_photo');
-const closeButtonImage = popupElementImage.querySelector('.popup__close-button');
 const figureElement = document.querySelector('.popup__photo-image');
 const imagePhoto = figureElement.querySelector('.popup__image');
 const imageCaption = figureElement.querySelector('.popup__caption');
 
 
-// Слушатель для кнопки закрытия модального окна с изображением
-closeButtonImage.addEventListener('click', () => {
-    closePopup(popupElementImage);
-});
 
 
 
@@ -148,11 +144,11 @@ function createCard(element) {
         evt.target.classList.toggle('elements__like-button_active');
     });
 
-    // Определение кнопки удаления карточки и функция удаления родительского элемента
+    // Определение кнопки удаления карточки и функция удаления карточки
     const cardDeleteButton = cardElement.querySelector('.elements__delete-button');
 
     cardDeleteButton.addEventListener('click', (evt) => {
-        evt.target.parentElement.remove();
+        cardElement.remove();
     });
 
 
