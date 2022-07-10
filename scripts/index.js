@@ -2,14 +2,12 @@
 const popupProfile = document.querySelector('.popup_type_edit-profile');
 const closeButtonProfile = popupProfile.querySelector('.popup__close-button');
 const formElementProfile = popupProfile.querySelector('#popup__edit');
-const nameInput = popupProfile.querySelector('#edit_name');
-const jobInput = popupProfile.querySelector('#edit_profession');
+const nameInput = popupProfile.querySelector('#edit-name');
+const jobInput = popupProfile.querySelector('#edit-profession');
 const profile = document.querySelector('.profile');
 const profileAuthor = profile.querySelector('.profile__title');
 const profileComment = profile.querySelector('.profile__subtitle');
 const editButton = profile.querySelector('.profile__edit-button');
-const newCardForm = document.querySelector('form[name="form__place"]');
-const editProfileForm = document.querySelector('form[name="form__edit"]');
 
 
 // Функция закрытия попапа
@@ -70,8 +68,8 @@ closeButtonProfile.addEventListener('click', () => {
 const popupElementCard = document.querySelector('.popup_type_add-card');
 const closeButtonCard = popupElementCard.querySelector('.popup__close-button');
 const formElementCard = popupElementCard.querySelector('#popup__new-place');
-const cardNameInput = formElementCard.querySelector('#place_name');
-const cardUrlInput = formElementCard.querySelector('#place_url');
+const cardNameInput = formElementCard.querySelector('#place-name');
+const cardUrlInput = formElementCard.querySelector('#place-url');
 const addButton = profile.querySelector('.profile__add-button');
 const saveButtonCard = formElementCard.querySelector('.popup__submit-button');
 
