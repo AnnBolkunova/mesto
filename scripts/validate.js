@@ -1,4 +1,4 @@
-
+// Фуекция отображения элемента с ошибкой
 function showInputError(formElement, inputElement, errorMessage, classes) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(classes.inputErrorClass);
@@ -6,14 +6,15 @@ function showInputError(formElement, inputElement, errorMessage, classes) {
     errorElement.classList.add(classes.errorClass);
 }
 
+// Функция скрытия элемента с ошибкой
 function hideInputError(formElement, inputElement, classes) {
-    debugger;
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.remove(classes.inputErrorClass);
     errorElement.classList.remove(classes.errorClass);
     errorElement.textContent = '';
 }
 
+// Проверка валидности поля
 const checkInputValidity = (formElement, inputElement, classes) => {
     if (!inputElement.validity.valid) {
         showInputError(formElement, inputElement, inputElement.validationMessage, classes);
@@ -22,12 +23,14 @@ const checkInputValidity = (formElement, inputElement, classes) => {
     }
 }
 
+// Функция проверки наличия невалидного поля
 const hasInvalidInput = (inputList) => {
     return inputList.some((inputElement) => {
         return !inputElement.validity.valid;
     });
 }
 
+// Функция активации/ деактивации кнопки
 const toggleButtonState = (inputList, buttonElement, classes) => {
     if (hasInvalidInput(inputList)) {
         buttonElement.classList.add(classes.inactiveButtonClass);
@@ -38,6 +41,7 @@ const toggleButtonState = (inputList, buttonElement, classes) => {
     }
 }
 
+// Добавление обработчиков события input всем полям формы
 const setEventListeners = (formElement, classes) => {
     const inputList = Array.from(formElement.querySelectorAll(classes.inputSelector));
     const buttonElement = formElement.querySelector(classes.submitButtonSelector);
@@ -59,6 +63,7 @@ const enableValidation = (classes) => {
     });
 }
 
+// Вызов функции валидации с входящими параметрами
 enableValidation({
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
