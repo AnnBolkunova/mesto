@@ -29,7 +29,7 @@ const closeButtons = document.querySelectorAll('.popup__close-button');
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', closeByEsc);
-    popup.removeEventListener('click', closeByClick);
+    popup.removeEventListener('mousedown', closeByClick);
 }
 
 // Функция закрытия попапа клавишей esc
@@ -50,7 +50,7 @@ function closeByClick(evt) {
 function openPopup(popup) {
     popup.classList.add('popup_opened');
     document.addEventListener('keydown', closeByEsc);
-    popup.addEventListener('click', closeByClick);
+    popup.addEventListener('mousedown', closeByClick);
 }
 
 
@@ -59,6 +59,8 @@ editButton.addEventListener('click', () => {
     nameInput.value = profileAuthor.textContent;
     jobInput.value = profileComment.textContent;
     openPopup(popupProfile);
+
+    popupProfileValid.resetValidation();
 });
 
 // Функция присвоения значений полям ввода в форме
@@ -93,10 +95,13 @@ const saveButtonCard = formElementCard.querySelector('.popup__submit-button');
 // Слушатель для кнопки открытия формы добавления карточки
 addButton.addEventListener('click', () => {
     openPopup(popupElementCard);
+
+    popupCardValid.resetValidation();
 });
 
 // Слушатель для кнопки submit
 popupElementCard.addEventListener('submit', handleCardFormSubmit);
+
 
 
 // Определение элементов модального окна с изображением из карточки в структуре DOM
@@ -111,40 +116,53 @@ const elementsContainer = document.querySelector('.elements__list');
 const cardTemplate = document.querySelector('#card-template').content;
 
 
-// Обработчик сабмита формы карточки
+// Функция создания карточки без добавления в DOM
+function createCard(item) {
+    const cardElement = new Card(
+        item.name,
+        item.link,
+        '#card-template',
+        openPopup,
+        handleCardClick
+    );
+    return cardElement.generateCard();
+}
+
+// Функция добавления в DOM
+function prependToSection(title, link) {
+    const newElement = createCard({ name: title, link: link })
+    elementsContainer.prepend(newElement)
+}
+
+
+//Функция добавления нового элемента
 function handleCardFormSubmit(evt) {
     evt.preventDefault();
 
-    const newCard = {}
-    newCard.name = cardNameInput.value;
-    newCard.link = cardUrlInput.value;
-
-    // Создание новой карточки
-    const card = new Card(newCard.name, newCard.link, '#card-template', popupElementImage, imagePhoto, imageCaption, openPopup)
-    const cardElement = card.generateCard();
-
-    addCard(cardElement);
-
-    evt.target.reset();
-
+    prependToSection(cardNameInput.value, cardUrlInput.value);
     closePopup(popupElementCard);
+    formElementCard.reset();
 }
 
-function addCard(cardElement) {
-    elementsContainer.prepend(cardElement)
+
+function handleCardClick(name, link) {
+    imagePhoto.src = link;
+    imagePhoto.alt = name;
+    imageCaption.textContent = name;
+    openPopup(popupElementImage);
 }
+
+
+// Экземпляры валидаторов для форм профиля и карточки
+const popupProfileValid = new FormValidator(validData, popupProfile);
+popupProfileValid.enableValidation();
+
+const popupCardValid = new FormValidator(validData, popupElementCard);
+popupCardValid.enableValidation();
+
 
 
 // Перебор элементов и создание карточек
-initialCards.forEach(element => {
-    const card = new Card(element.name, element.link, '#card-template', popupElementImage, imagePhoto, imageCaption, openPopup)
-    const cardElement = card.generateCard();
-    addCard(cardElement);
-})
-
-// Добавление обработчиков всем формам
-const formList = Array.from(document.querySelectorAll('.popup__form'));
-formList.forEach((formElement) => {
-    const formValidator = new FormValidator(validData, formElement);
-    formValidator.enableValidation();
+initialCards.forEach((element) => {
+    prependToSection(element.name, element.link)
 });

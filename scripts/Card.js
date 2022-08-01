@@ -1,13 +1,11 @@
 export class Card {
     // Передача в конструктор необходимых параметров для создания карточки
-    constructor(name, link, templateSelector, popupElementImage, imagePhoto, imageCaption, openPopup) {
+    constructor(name, link, templateSelector, openPopup, handleCardClick) {
         this._name = name;
         this._link = link;
         this._templateSelector = templateSelector;
-        this._popupElementImage = popupElementImage;
-        this._imagePhoto = imagePhoto;
-        this._imageCaption = imageCaption;
         this._openPopup = openPopup;
+        this._handleCardClick = handleCardClick;
     }
 
     _getTemplate() {
@@ -22,7 +20,7 @@ export class Card {
 
     // Приватный метод лайка
     _handleLikeElement() {
-        this._element.querySelector('.elements__like-button').classList.toggle('elements__like-button_active');
+        this._likeButton.classList.toggle('elements__like-button_active');
     }
 
     // Приватный метод удаления карточки
@@ -30,37 +28,33 @@ export class Card {
         this._element.closest('.elements__item').remove();
     }
 
-    // Приватный метод открытия окна с изображением из карточки
-    _handleImageShow() {
-        this._openPopup(this._popupElementImage);
-        this._imagePhoto.src = this._link;
-        this._imagePhoto.alt = this._name;
-        this._imageCaption.textContent = this._name;
-    }
 
     // Публичный метод создания карточки
     generateCard() {
         this._element = this._getTemplate();
+        this._likeButton = this._element.querySelector('.elements__like-button');
+        this._deleteButton = this._element.querySelector('.elements__delete-button');
+        this._cardImage = this._element.querySelector('.elements__image');
         this._setEventListeners();
 
-        this._element.querySelector('.elements__image').alt = this._name;
-        this._element.querySelector('.elements__image').src = this._link;
+        this._cardImage.alt = this._name;
+        this._cardImage.src = this._link;
         this._element.querySelector('.elements__group-text').textContent = this._name;
 
         return this._element;
     }
 
     _setEventListeners() {
-        this._element.querySelector('.elements__like-button').addEventListener('click', () => {
+        this._likeButton.addEventListener('click', () => {
             this._handleLikeElement();
         });
 
-        this._element.querySelector('.elements__delete-button').addEventListener('click', (evt) => {
+        this._deleteButton.addEventListener('click', (evt) => {
             this._handleDeleteElement();
         });
 
-        this._element.querySelector('.elements__image').addEventListener('click', () => {
-            this._handleImageShow();
+        this._cardImage.addEventListener('click', () => {
+            this._handleCardClick(this._name, this._link);
         });
     }
 
