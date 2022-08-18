@@ -1,6 +1,6 @@
 .popup__error {
     width: 358px;
-    margin-top: 5px;
+    position: absolute;
     display: flex;
     font-weight: 400;
     font-size: 12px;
@@ -8,6 +8,14 @@
     color: #FF0000;
     overflow: visible;
     visibility: hidden;
+}
+
+.popup__error:first-of-type {
+    top: 152px;
+}
+
+.popup__error:last-of-type {
+    top: 218px;
 }
 
 @media screen and (max-width: 459px) {

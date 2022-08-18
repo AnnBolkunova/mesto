@@ -10,7 +10,7 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
 
-import { validData, popupElementProfile, popupElementCard, editButton, addButton, nameInput, jobInput } from '../utils/constants.js';
+import { validData, popupElementProfile, popupElementCard, buttonEdit, buttonAdd, nameInput, jobInput } from '../utils/constants.js';
 
 
 // Создание экземпляров класса для валидации каждой формы
@@ -44,15 +44,15 @@ const cardsList = new Section({
 cardsList.renderItems();
 
 // Обработка кнопки редактирования профайла и кнопки добавления карточки
-editButton.addEventListener('click', () => {
-  const userFormValues = newUserInfo.getUserInfo();
-  nameInput.value = userFormValues.name;
+buttonEdit.addEventListener('click', () => {
+  const userFormValues = newUserInfo.getUserInfo(); 
+  nameInput.value = userFormValues.name; 
   jobInput.value = userFormValues.job;
   popupValitatorProfile.resetValidation();
   popupWithFormProfile.open();
 });
 
-addButton.addEventListener('click', () => {
+buttonAdd.addEventListener('click', () => {
   popupValitatorCard.resetValidation();
   popupWithFormCard.open();
 });

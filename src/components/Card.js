@@ -24,7 +24,8 @@ export class Card {
 
     // Приватный метод удаления карточки
     _handleDeleteElement() {
-        this._element.closest('.elements__item').remove();
+        this._element.remove();
+        this._element = null;
     }
 
 

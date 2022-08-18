@@ -33,15 +33,15 @@ export class FormValidator {
     }
 
     // Метод проверки наличия невалидного поля
-    _hasInvalidInput(inputList) {
-        return inputList.some((inputElement) => {
+    _hasInvalidInput() {
+        return this._inputList.some((inputElement) => {
             return !inputElement.validity.valid;
         })
     }
 
     // Метод активации/деактивации кнопки
     _toggleButtonState() {
-        if (this._hasInvalidInput(this._inputList)) {
+        if (this._hasInvalidInput()) {
             this._buttonElement.classList.add(this._validData.inactiveButtonClass);
             this._buttonElement.setAttribute('disabled', true);
         } else {
@@ -71,9 +71,6 @@ export class FormValidator {
     }
 
     enableValidation() {
-        this._formSelector.addEventListener('submit', function (evt) {
-            evt.preventDefault();
-        });
         this._setEventListeners();
     };
 }
