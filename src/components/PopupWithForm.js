@@ -6,7 +6,9 @@ export default class PopupWithForm extends Popup {
         super(popupSelector);
         this._handleSubmitForm = handleSubmitForm; // колбэк сабмита формы
         this._form = this._popup.querySelector('.popup__form');
-        this._inputList = Array.from(this._form.querySelectorAll('.popup__input')) // массив всех данных из полей формы
+        this._buttonSubmit = this._form.querySelector('.popup__submit-button');
+        this._defaultButtonText = this._buttonSubmit.textContent;
+        this._inputList = Array.from(this._form.querySelectorAll('.popup__input')); // массив всех данных из полей формы
     }
 
     // Приватный метод, который собирает данные всех полей формы
@@ -32,5 +34,13 @@ export default class PopupWithForm extends Popup {
     close() {
         super.close();
         this._form.reset();
+    }
+
+    setButtonInProgress() {
+        this._buttonSubmit.textContent = "Сохранение...";
+    }
+
+    resetButtonState() {
+        this._buttonSubmit.textContent = this._defaultButtonText;
     }
 } 

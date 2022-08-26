@@ -14,7 +14,7 @@
     </header>
     <main class="content">
         <section class="profile">
-            <img class="profile__avatar" src="<%=require('./images/avatar.jpg')%>" alt="аватар">
+            <div class="profile__avatar"></div>
             <div class="profile__info">
                 <div class="profile__name">
                     <h1 class="profile__title">Жак-Ив Кусто</h1>
@@ -73,6 +73,27 @@
             <figcaption class="popup__caption"></figcaption>
         </figure>
     </div>
+    <div class="popup popup_type_delete-confirm">
+        <div class="popup__container">
+            <button type="button" class="popup__close-button"></button>
+            <form action="save" class="popup__form" name="delete-confirm" novalidate>
+                <h3 class="popup__title popup__title_type_delete-confirm">Вы уверены?</h3>
+                <button type="submit" class="popup__submit-button popup__submit_type_delete-confirm">Да</button>
+            </form>
+        </div>
+    </div>
+    <div class="popup popup_type_update-avatar">
+        <div class="popup__container">
+            <button type="button" class="popup__close-button"></button>
+            <form action="save" class="popup__form" name="new-place" novalidate>
+                <h3 class="popup__title">Обновить аватар</h3>
+                <input class="popup__input popup__input_type_update-avatar" type="url" name="link"
+                    placeholder="Ссылка на картинку" required>
+                <span class="popup__error place-link-error"></span>
+                <button type="submit" class="popup__submit-button">Сохранить</button>
+            </form>
+        </div>
+    </div>
 
     <template id="card-template">
         <li class="elements__item">
@@ -80,7 +101,10 @@
             <img class="elements__image" src="#" alt="#">
             <div class="elements__group">
                 <h2 class="elements__group-text"></h2>
-                <button type="button" class="elements__like-button"></button>
+                <div class="elements__likes">
+                    <button type="button" class="elements__like-button"></button>
+                    <span class="elements__likes-amount">0</span>
+                </div>
             </div>
         </li>
     </template>
