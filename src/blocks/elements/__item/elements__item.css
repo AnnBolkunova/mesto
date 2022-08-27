@@ -1,0 +1,9 @@
+.elements__item {
+    width: 282px;
+    display: grid;
+    background: #ffffff;
+    border-radius: 10px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
