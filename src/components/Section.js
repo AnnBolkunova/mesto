@@ -2,8 +2,7 @@
 // Всю разметку класс получает через функцию-колбэк и вставляет ее в контейнер
 
 export default class Section {
-    constructor({ items, renderer }, containerSelector) {
-        this._items = items;
+    constructor({ renderer }, containerSelector) {
         this._renderer = renderer;
         this._container = document.querySelector(containerSelector);
     }
@@ -11,8 +10,8 @@ export default class Section {
     // Публичный метод отрисовки элементов
     renderItems() {
         this._items.forEach((item) => {
-            this._renderer(item);
-        })
+            this.addItem(this._renderer(item));
+        });
     }
 
     // Публичный метод, который принимает DOM-элемент и вставляет его в контейнер

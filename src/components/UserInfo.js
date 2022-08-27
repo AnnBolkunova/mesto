@@ -17,18 +17,10 @@ export default class UserInfo {
     }
 
     // Публичный метод, который принимает новые данные пользователя и добавляет их на страницу
-    setUserInfo(info, userId) {
-        this._profileName.textContent = info.name;
-        this._profileJob.textContent = info.job;
-        this._userId = userId;
+    setUserInfo(item) {
+        this._profileName.textContent = item.name;
+        this._profileJob.textContent = item.about;
+        this._avatar.src = item.avatar;
     }
 
-    // Метод установки нововго аватара
-    setAvatar({ avatarLink }) {
-        this._avatar.style.backgroundImage = `url(${avatarLink})`;
-    }
-
-    getUserId() {
-        return this._userId;
-    }
 } 

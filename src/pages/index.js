@@ -16,117 +16,90 @@ import { validData, apiData, popupElementProfile, popupElementCard, buttonEdit, 
 
 const api = new Api(apiData);
 
+let userId;
+
 // Создание экземпляров класса для валидации каждой формы
 const popupValitatorProfile = new FormValidator(validData, popupElementProfile);
 popupValitatorProfile.enableValidation();
 
+const popupValitatorAvatar = new FormValidator(validData, popupElementAvatar)
+popupValitatorAvatar.enableValidation();
+
 const popupValitatorCard = new FormValidator(validData, popupElementCard);
 popupValitatorCard.enableValidation();
 
-const popupValitatorAvatar = new FormValidator(validData, popupElementAvatar)
-popupValitatorAvatar.enableValidation();
+
+const popupWithFormProfile = new PopupWithForm('.popup_type_edit-profile', handleProfileEdit);
+const popupWithFormAvatar = new PopupWithForm('.popup_type_update-avatar', handleChangeAvatar);
+const popupWithFormCard = new PopupWithForm('.popup_type_add-card', handleAddCard);
+
+//Cоздаем экземпляр класса для попапа удаления карточки
+const newPopupWithFormDelete = new PopupWithConfirmation('.popup_type_delete-confirm');
 
 const newPopupWithImage = new PopupWithImage('.popup_type_photo');
 
 // Экземпляр класса с данными из профайла
-const newUserInfo = new UserInfo({ profileNameSelector: '.profile__title', profileJobSelector: '.profile__subtitle', avatarSelector: '.profile__image' });
+const newUserInfo = new UserInfo({ profileNameSelector: '.profile__title', profileJobSelector: '.profile__subtitle', avatarSelector: '.profile__avatar' });
 
+// Создание класса для добавления элементов в DOM
+const cardsList = new Section({ renderer: createCard }, '.elements__list');
+
+
+const userInfoGet = api.getProfileInfo();
+const initialCardsGet = api.getInitialCards();
+
+userInfoGet
+  .then(res => {
+    userId = res._id;
+    newUserInfo.setUserInfo(res);
+  })
+  .catch(err => {
+    console.log(err)
+  })
 
 
 // Функция создания карточки
-function createCard(data) {
-  const userId = newUserInfo.getUserId()
-  const card = new Card(data, userId, '#card-template', handleCardClick, {
-    handleDeleteClick: () => {
-      newPopupWithFormDelete.getFormSubmitHandler(() => {
-        //получаем id данной карточки для удаления
-        const cardId = card.getCardId()
-        //отправляем запрос на удаление карточки с сервера
-        api.deleteCardFromServer({ cardId: cardId })
-          .then(() => {
-            //Удаляем карточку локально
-            card.deleteCard()
-            //Закрываем форму подтверждения удаления карточки
-            newPopupWithFormDelete.close()
-          })
-          .catch((err) => {
-            console.log(err); // выведем ошибку в консоль
-          })
+function createCard(item) {
+  const card = new Card(item, '#card-template', handleCardClick, userId, () => {
+    newPopupWithFormDelete.open(() =>
+      api.deleteCardFromServer(card.getId())
+        .then(() => {
+          card.deleteCard();
+          newPopupWithFormDelete.close();
+        })
+        .catch((err) => {
+          console.log(err);
+        }));
+  }, () => {
+    api.putLike(card.getId())
+      .then((res) => {
+        card.likeElement();
+        card.updateLikesAmount(res);
       })
-      newPopupWithFormDelete.open()
-    },
-
-    handleLikeUpdate: () => {
-      const cardId = card.getCardId()
-
-      //Если карточка уже лайкнута, то удаляем лайк с сервера
-      if (card.getLikedStatus()) {
-        api.deleteLike({ cardId: cardId })
-          .then((res) => {
-            //При любой манипуляции с лайками на сервере обновляем информацию о лайках в классе, чтобы потом знать, была ли лайкнута мной
-            card.updateLikesInfo({ likes: res.likes })
-            card.updateLikesAmount()
-            //переключаем цвет сердечка
-            card.handleLikeClick()
-          })
-          .catch((err) => {
-            console.log(err); // выведем ошибку в консоль
-          })
-      } else {
-        api.putLike({ cardId: cardId })
-          .then((res) => {
-            //При любой манипуляции с лайками на сервере обновляем информацию о лайках в классе, чтобы потом знать, была ли лайкнута мной
-            card.updateLikesInfo({ likes: res.likes })
-            card.updateLikesAmount()
-            //переключаем цвет сердечка 
-            card.handleLikeClick()
-          })
-          .catch((err) => {
-            console.log(err); // выведем ошибку в консоль
-          })
-      }
-    }
+      .catch((err => {
+        card.log(err);
+      }))
+  }, () => {
+    api.deleteLike(card.getId())
+      .then((res) => {
+        card.disLikeElement();
+        card.updateLikesAmount(res)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   })
-
-  const cardElement = card.generateCard()
-  return cardElement
+  return card.generateCard();
 }
 
 
-
-
-
-// Создание класса для добавления элементов в DOM
-const cardsList = new Section({
-  renderer: (item) => {
-    const newCardElement = createCard(item.name, item.link);
-    cardsList.addItem(newCardElement);
-  }
-}, '.elements__list');
-
-
-//Отрисовка страницы с начальной информацией
-Promise.all([api.getProfileInfo(), api.getInitialCards()]) //Делаем параллельные запросы
-  .then(([profileInfo, initialCards]) => {
-    //все данные получены, отрисовываем страницу
-    //отрисовка профиля
-    newUserInfo.setUserInfo({ name: profileInfo.name, job: profileInfo.about, userId: profileInfo._id })
-    //передаем ссылку из ответа сервера в метод для установки аватара
-    newUserInfo.setAvatar({ avatarLink: profileInfo.avatar })
-
-
-    //отрисовка карточек
-
-    cardsList.renderItems({ items: initialCards })
+Promise.all(([userInfoGet, initialCardsGet]))
+  .then(res => {
+    console.log(res);
   })
-  .catch((err) => {
-    console.log(err); // выведем ошибку в консоль
+  .catch(err => {
+    console.log(err)
   })
-
-
-
-
-// Обработка кнопки редактирования профайла и кнопки добавления карточки
 buttonEdit.addEventListener('click', () => {
   const userFormValues = newUserInfo.getUserInfo();
   nameInput.value = userFormValues.name;
@@ -135,114 +108,62 @@ buttonEdit.addEventListener('click', () => {
   popupWithFormProfile.open();
 });
 
-
-// Экземпляры класса для каждого попапа формы
-const popupWithFormProfile = new PopupWithForm({
-  popupSelector: '.popup_type_edit-profile',
-  handleSubmitForm: (item) => {
-    popupWithFormProfile.setButtonInProgress();
-    // Сохранение обновленных данных о пользователе на сервере
-    api.updateProfileInfo({ name: item.name, about: item.job })
-
-      .then(() => {
-        newUserInfo.setUserInfo(item);
-        popupWithFormProfile.close();
-        popupWithFormProfile.resetButtonState();
-      })
-
-      .catch((err) => {
-        console.log(err);
-      })
-  }
-});
-
-
-
-//Создаем класс формы редактирования аватара
-const popupWithFormAvatar = new PopupWithForm({
-  popupSelector: '.popup_type_update-avatar',
-  //обработка нажатия на sumit
-  handleSubmitForm: (item) => {
-    //меняем текст кнопки на Сохранение, пока не получим ответ от сервера
-    popupWithFormAvatar.setButtonInProgress()
-    const avatarLink = item.link
-
-    //передаем ссылку для обновлениия ссылки на аватар на сервере
-    api.updateAvatar({ avatarLink: avatarLink })
-      .then(() => {
-        //передаем ссылку из формы в качестве параметра метода для устновки аватара локально
-        newUserInfo.setAvatar({ avatarLink: avatarLink })
-        //Закрываем форму только когда получим ответ от сервера
-        popupWithFormAvatar.close()
-        //Меняем текст кнопки сабмит на дефолтный для этой формы
-        popupWithFormAvatar.resetButtonState()
-      })
-      .catch((err) => {
-        console.log(err); // выведем ошибку в консоль
-      })
-  }
-})
-
-//Обработка клика на аватар
-avatarElement.addEventListener('click', () => {
-  //очищаем сообщение ошибки валидации
-  popupValitatorAvatar.resetValidation()
-  //открываем модальное окно редактирования аватара
-  popupWithFormAvatar.open()
-})
-
-
-
 buttonAdd.addEventListener('click', () => {
   popupValitatorCard.resetValidation();
   popupWithFormCard.open();
 });
 
-
-const popupWithFormCard = new PopupWithForm({
-  popupSelector: '.popup_type_add-card',
-  // Обработчик «отправки» формы Card
-  handleSubmitForm: (item) => {
-    //меняем текст кнопки на Сохранение, пока не получим ответ от сервера
-    popupWithFormCard.setButtonInProgress()
-    //Добавляем новую карточку на сервер
-    api.addNewCard({ name: item.name, url: item.link })
-      //Сначала отправляем запрос на добавление карточки на сервер
-      //чтобы в ответе получить _id карточки и прокинуть его в создание карточки
-      //id карточки потребуется при запросе на ее удаление с сервера
-      .then((res) => {
-        item.likes = []
-        item.myId = res.owner._id
-        item.owner = { _id: item.myId }
-        //добавляем id карточки при ее создании
-        item._id = res._id
-        const newCardElement = createCard(item.name, item.link)
-        // Добавляем новую карточку в начало галереи 
-        cardsList.addItemPrepend(newCardElement)
-
-        //Закрываем форму только когда получим ответ от сервера
-        popupWithFormCard.close()
-        //Меняем текст кнопки сабмит на дефолтный для этой формы
-        popupWithFormCard.resetButtonState()
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+avatarElement.addEventListener('click', () => {
+  popupValitatorAvatar.resetValidation()
+  popupWithFormAvatar.open()
 })
 
 
+// Функция сохранения данных профиля
+function handleProfileEdit(item) {
+  popupWithFormProfile.setButtonInProgress();
+  api.updateProfileInfo(item.name, item.job)
+    .then((res) => {
+      newUserInfo.setUserInfo(res);
+      popupWithFormProfile.close();
+      popupWithFormProfile.resetButtonState();
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
 
-//УДАЛЕНИЕ КАРТОЧКИ
-//Cоздаем экземпляр класса для попапа удаления карточки
-const newPopupWithFormDelete = new PopupWithConfirmation({ popupSelector: '.popup_type_delete-confirm' })
-
-
-
+// Функция добавления нового элемента
+function handleAddCard(item) {
+  popupWithFormCard.setButtonInProgress();
+  api.addNewCard(item.name, item.link)
+    .then((res) => {
+      cardsList.addItem(createCard(res));
+      popupWithFormCard.close();
+      popupWithFormCard.resetButtonState();
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
 
 // Функция открытия попапа с изображением
 function handleCardClick(name, link) {
   newPopupWithImage.open(name, link);
+}
+
+// Функция редактирования аватара
+function handleChangeAvatar(item) {
+  popupWithFormAvatar.setButtonInProgress();
+  api.updateAvatar(item)
+    .then((res) => {
+      newUserInfo.setUserInfo(res);
+      popupWithFormAvatar.close();
+      popupWithFormAvatar.resetButtonState();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 }
 
 

@@ -2,7 +2,7 @@ import Popup from './Popup.js'
 
 // Наследование родительского класс Popup с изменением и добавлением методов
 export default class PopupWithForm extends Popup {
-    constructor({ popupSelector, handleSubmitForm }) {
+    constructor(popupSelector, handleSubmitForm) {
         super(popupSelector);
         this._handleSubmitForm = handleSubmitForm; // колбэк сабмита формы
         this._form = this._popup.querySelector('.popup__form');

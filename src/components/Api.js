@@ -17,12 +17,10 @@ export default class Api {
         return fetch(`${this._url}/users/me`, {
             headers: this._headers
         })
-            .then((res) => {
-                return this._getResponseData(res)
-            })
+        .then(this._getResponseData);
     }
 
-    updateProfileInfo({ name, job }) {
+    updateProfileInfo(name, job) {
         return fetch(`${this._url}/users/me`, {
             method: 'PATCH',
             headers: this._headers,
@@ -31,9 +29,7 @@ export default class Api {
                 about: job
             })
         })
-            .then((res) => {
-                return this._getResponseData(res)
-            })
+        .then(this._getResponseData);
     }
 
     addNewCard(name, link) {
@@ -45,39 +41,31 @@ export default class Api {
                 link: link
             })
         })
-            .then((res) => {
-                return this._getResponseData(res)
-            })
+        .then(this._getResponseData);
     }
 
-    deleteCardFromServer(cardId) {
-        return fetch(`${this._url}/cards/${cardId}`, {
+    deleteCardFromServer(id) {
+        return fetch(`${this._url}/cards/${id}`, {
             method: 'DELETE',
             headers: this._headers
         })
-            .then((res) => {
-                return this._getResponseData(res)
-            })
+        .then(this._getResponseData);
     }
 
-    putLike(cardId) {
-        return fetch(`${this._url}/cards/${cardId}/likes`, {
+    putLike(id) {
+        return fetch(`${this._url}/cards/likes/${id}`, {
             method: 'PUT',
             headers: this._headers
         })
-            .then((res) => {
-                return this._getResponseData(res)
-            })
+        .then(this._getResponseData);
     }
 
-    deleteLike(cardId) {
-        return fetch(`${this._url}/cards/${cardId}/likes`, {
+    deleteLike(id) {
+        return fetch(`${this._url}/cards/likes/${id}`, {
             method: 'DELETE',
             headers: this._headers
         })
-            .then((res) => {
-                return this._getResponseData(res)
-            })
+        .then(this._getResponseData);
     }
 
     updateAvatar(item) {
@@ -85,20 +73,17 @@ export default class Api {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
-                avatar: item.url
+                avatar: item.link
             })
         })
-            .then((res) => {
-                return this._getResponseData(res)
-            })
+        .then(this._getResponseData);
     }
 
     _getResponseData(res) {
-
+        console.log(res)
         if (res.ok) {
             return res.json()
         }
-        // если ошибка, отклоняем промис
         return Promise.reject(`Ошибка: ${res.status}`)
     }
 } 
