@@ -8,7 +8,8 @@ export default class Section {
     }
 
     // Публичный метод отрисовки элементов
-    renderItems() {
+    renderItems(items) {
+        this._items = items;
         this._items.forEach((item) => {
             this.addItem(this._renderer(item));
         });

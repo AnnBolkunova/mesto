@@ -57,6 +57,15 @@ userInfoGet
     console.log(err)
   })
 
+initialCardsGet
+  .then(res => {
+    cardsList.renderItems(res);
+  })
+  .catch(err => {
+    console.log(err)
+  })
+
+
 
 // Функция создания карточки
 function createCard(item) {
@@ -100,6 +109,7 @@ Promise.all(([userInfoGet, initialCardsGet]))
   .catch(err => {
     console.log(err)
   })
+
 buttonEdit.addEventListener('click', () => {
   const userFormValues = newUserInfo.getUserInfo();
   nameInput.value = userFormValues.name;
