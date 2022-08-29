@@ -14,7 +14,8 @@
     </header>
     <main class="content">
         <section class="profile">
-            <img class="profile__avatar" src="#" alt="Аватар">
+            <img class="profile__avatar" src="#" alt="аватар">
+            <button class="profile__edit-photo-button" type="button"></button>
             <div class="profile__info">
                 <div class="profile__name">
                     <h1 class="profile__title">Жак-Ив Кусто</h1>
@@ -43,10 +44,10 @@
                 <h3 class="popup__title">Редактировать профиль</h3>
                 <input name="name" type="text" class="popup__input popup__input_type_name" id="edit-name"
                     placeholder="Имя" minlength="2" maxlength="40" required>
-                <span class="popup__error edit-name-error"></span>
+                <span class="popup__error edit-name-error popup__error_type-first"></span>
                 <input name="job" type="text" class="popup__input popup__input_type_job" id="edit-job"
                     placeholder="О себе" minlength="2" maxlength="200" required>
-                <span class="popup__error edit-job-error"></span>
+                <span class="popup__error edit-job-error popup__error_type-second"></span>
                 <button type="submit" class="popup__submit-button popup__submit-button_inactive">Сохранить</button>
             </form>
         </div>
@@ -58,10 +59,10 @@
                 <h3 class="popup__title">Новое место</h3>
                 <input name="name" type="text" class="popup__input popup__input_type_placename" id="place-name"
                     placeholder="Название" minlength="2" maxlength="30" required>
-                <span class="popup__error place-name-error"></span>
+                <span class="popup__error place-name-error popup__error_type-first"></span>
                 <input name="link" type="url" class="popup__input popup__input_type_placeurl" id="place-link"
                     placeholder="Ссылка на картинку" required>
-                <span class="popup__error place-link-error"></span>
+                <span class="popup__error place-link-error popup__error_type-second"></span>
                 <button type="submit" class="popup__submit-button popup__submit-button_inactive">Создать</button>
             </form>
         </div>
@@ -89,7 +90,7 @@
                 <h3 class="popup__title">Обновить аватар</h3>
                 <input name="link" type="url" class="popup__input popup__input_type_update-avatar" id="edit-avatar"
                     placeholder="Ссылка на картинку" required>
-                <span class="popup__error edit-avatar-error"></span>
+                <span class="popup__error edit-avatar-error popup__error_type-avatar"></span>
                 <button type="submit" class="popup__submit-button">Сохранить</button>
             </form>
         </div>

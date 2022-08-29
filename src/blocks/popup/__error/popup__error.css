@@ -10,14 +10,6 @@
     visibility: hidden;
 }
 
-.popup__error:first-of-type {
-    top: 152px;
-}
-
-.popup__error:last-of-type {
-    top: 218px;
-}
-
 @media screen and (max-width: 459px) {
     .popup__error {
         width: 238px;

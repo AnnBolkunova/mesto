@@ -45,28 +45,6 @@ const newUserInfo = new UserInfo({ profileNameSelector: '.profile__title', profi
 const cardsList = new Section({ renderer: createCard }, '.elements__list');
 
 
-const userInfoGet = api.getProfileInfo();
-const initialCardsGet = api.getInitialCards();
-
-userInfoGet
-  .then(res => {
-    userId = res._id;
-    newUserInfo.setUserInfo(res);
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-initialCardsGet
-  .then(res => {
-    cardsList.renderItems(res);
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-
-
 // Функция создания карточки
 function createCard(item) {
   const card = new Card(item, '#card-template', handleCardClick, userId, () => {
@@ -101,14 +79,18 @@ function createCard(item) {
   return card.generateCard();
 }
 
+// Параллельные запросы начальной информации на странице
+Promise.all([api.getProfileInfo(), api.getInitialCards()])
+  .then(([userData, initialCards]) => {
+    userId = userData._id;
+    newUserInfo.setUserInfo(userData);
 
-Promise.all(([userInfoGet, initialCardsGet]))
-  .then(res => {
-    console.log(res);
+    cardsList.renderItems(initialCards);
   })
-  .catch(err => {
-    console.log(err)
+  .catch((err) => {
+    console.log(err);
   })
+
 
 buttonEdit.addEventListener('click', () => {
   const userFormValues = newUserInfo.getUserInfo();
@@ -136,10 +118,12 @@ function handleProfileEdit(item) {
     .then((res) => {
       newUserInfo.setUserInfo(res);
       popupWithFormProfile.close();
-      popupWithFormProfile.resetButtonState();
     })
     .catch((err) => {
       console.log(err)
+    })
+    .finally(() => {
+      popupWithFormProfile.resetButtonState();
     })
 }
 
@@ -150,10 +134,12 @@ function handleAddCard(item) {
     .then((res) => {
       cardsList.addItem(createCard(res));
       popupWithFormCard.close();
-      popupWithFormCard.resetButtonState();
     })
     .catch((err) => {
       console.log(err)
+    })
+    .finally(() => {
+      popupWithFormCard.resetButtonState();
     })
 }
 
@@ -169,10 +155,12 @@ function handleChangeAvatar(item) {
     .then((res) => {
       newUserInfo.setUserInfo(res);
       popupWithFormAvatar.close();
-      popupWithFormAvatar.resetButtonState();
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      popupWithFormAvatar.resetButtonState();
     })
 }
 

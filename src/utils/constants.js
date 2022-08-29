@@ -23,6 +23,6 @@ const buttonAdd = document.querySelector('.profile__add-button');
 const nameInput = document.querySelector('.popup__input_type_name');
 const jobInput = document.querySelector('.popup__input_type_job');
 const popupElementAvatar = document.querySelector('.popup_type_update-avatar')
-const avatarElement = document.querySelector('.profile__avatar')
+const avatarElement = document.querySelector('.profile__edit-photo-button')
 
 export { validData, apiData, popupElementProfile, popupElementCard, buttonEdit, buttonAdd, nameInput, jobInput, popupElementAvatar, avatarElement } 

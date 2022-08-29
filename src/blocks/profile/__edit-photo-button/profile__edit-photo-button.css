@@ -1,0 +1,11 @@
+/*.profile__edit-photo-button {
+    background: url(../../../images/Pen-edit.svg) center no-repeat;
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    border: none;
+    display: none;
+}
+.profile__edit-photo-button:hover {
+    display: block;
+}*/
